@@ -11,15 +11,12 @@ app.use(express.json());
 
 const PORT = process.env.PORT || 5000;
 
-
-// 1. database link
 const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_DATABASE,
-  password: process.env.DB_PASSWORD, 
-  port: process.env.DB_PORT,
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false } // Tohle je na Renderu nutné pro zabezpečené spojení
 });
+
+ 
 
 pool.query('SELECT NOW()', (err, res) => {
   if (err) {
