@@ -1,0 +1,15 @@
+GIT hub push
+
+git remote add origin https://github.com/tvoje-jmeno/moje-sfgame.git
+
+//branch name
+git branch -M main
+
+//ODESLÁNÍ NA NET
+git push -u origin main
+
+backend Start
+npx nodemon index.js
+
+frontedn start
+npm start

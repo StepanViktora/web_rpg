@@ -1,18 +1,34 @@
+require('dotenv').config();
 const express = require('express');
-const { Pool } = require('pg'); // Knihovna pro komunikaci s Postgres
-const app = express();
-const PORT = 5000;
+const { Pool } = require('pg');  
 const cors = require('cors');
+ 
+
+const app = express();
+
 app.use(cors());
+app.use(express.json());
+
+const PORT = process.env.PORT || 5000;
+
 
 // 1. database link
 const pool = new Pool({
-  user: 'postgres',
-  host: 'localhost',
-  database: 'rpg_web_db',
-  password: 'Kastrolek5', // <-- TADY DOPLŇ HESLO
-  port: 5432,
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_DATABASE,
+  password: process.env.DB_PASSWORD, 
+  port: process.env.DB_PORT,
 });
+
+pool.query('SELECT NOW()', (err, res) => {
+  if (err) {
+    console.error('❌ Chyba připojení k DB:', err);
+  } else {
+    console.log('✅ Databáze je připojená a odpovídá!');
+  }
+});
+
 
 // 2. get data from database
 app.get('/player', async (req, res) => {

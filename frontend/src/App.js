@@ -2,20 +2,22 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import heroImage from './hero.png';
 
+const API_URL = "http://localhost:5000";
+
 function App() {
   const [player, setPlayer] = useState(null);
 
   
   useEffect(() => {
     // here get backend
-    fetch('http://localhost:5000/player')
+    fetch(`${API_URL}/player`)
       .then(res => res.json())
       .then(data => setPlayer(data))
       .catch(err => console.error("Chyba:", err));
   }, []);
 
   const handleWork = () => {
-    fetch('http://localhost:5000/work', { method: 'POST' })
+    fetch(`${API_URL}/work`, { method: 'POST' })
       .then(res => res.json())
       .then(data => {
         setPlayer(data); 
@@ -24,7 +26,7 @@ function App() {
   };
 
   const handleExp = () => {
-    fetch('http://localhost:5000/exp', { method: 'POST' })
+    fetch(`${API_URL}/exp`, { method: 'POST' })
       .then(res => res.json())
       .then(data => {
         setPlayer(data); 
@@ -35,7 +37,7 @@ function App() {
   return (
     <div className="App">
       <h1>SFgame Klon - Rozcestník</h1>
-      <hr />
+       
       
       {player ? (
         <div className="stats-card">
@@ -76,6 +78,8 @@ function App() {
       )}
     </div>
   );
+
+  
 }
 
 
