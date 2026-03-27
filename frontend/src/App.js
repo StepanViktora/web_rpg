@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 
 //components
-import Character from './Components/character';
-import Tavern from './Components/tavern';
+import Character from './components/Character';
+import Tavern from './components/Tavern';
 
 
 const API_URL = "https://rpggame-backend.onrender.com";
@@ -33,7 +33,7 @@ function App() {
         const data = await response.json();
         localStorage.setItem("rpg_player", JSON.stringify(data));
         setPlayer(data); // Rovnou přihlásíme vytvořeného hrdinu
-        alert("Hrdina úspěšně vytvořen!");
+        alert("Hrdina úspěšně vytvořen!");s
       } else {
         const errorText = await response.text();
         alert(errorText);
