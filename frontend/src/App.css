@@ -65,3 +65,18 @@ h1 {
   margin-bottom: 20px; /* Mezera pod obrázkem před jménem */
   box-shadow: 0 5px 15px rgba(0,0,0,0.3); /* Jemný stín */
 }
+
+
+.tab-navigation button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.tab-navigation button:hover {
+  filter: brightness(1.2);
+}
