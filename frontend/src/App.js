@@ -17,7 +17,7 @@ function App() {
   const handleRegister = async () => {
     if (!regName || !regPass) return alert("Vyplň jméno a heslo!");
     setLoading(true);
-
+    
 
   
   try {
@@ -29,6 +29,7 @@ function App() {
 
       if (response.ok) {
         const data = await response.json();
+        localStorage.setItem("rpg_player", JSON.stringify(data));
         setPlayer(data); // Rovnou přihlásíme vytvořeného hrdinu
         alert("Hrdina úspěšně vytvořen!");
       } else {
@@ -70,7 +71,30 @@ function App() {
     .catch(err => console.error("Chyba při expení:", err));
 };
 
+// --- TENTO BLOK PŘIDEJ ---
+  useEffect(() => {
+    // 1. Koukneme se do tajné zásuvky prohlížeče (localStorage)
+    const savedPlayer = localStorage.getItem("rpg_player");
 
+    if (savedPlayer) {
+      // 2. Pokud tam něco je, převedeme to z textu na objekt a dáme do hry
+      const playerData = JSON.parse(savedPlayer);
+      setPlayer(playerData);
+
+      // 3. (Dobrovolné, ale doporučené) Zeptáme se backendu na aktuální goldy
+      // Aby hráč neměl stará data, pokud mezitím někdo jiný něco změnil
+      fetch(`${API_URL}/player_by_id?id=${playerData.id}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data) {
+             setPlayer(data);
+             localStorage.setItem("rpg_player", JSON.stringify(data));
+          }
+        })
+        .catch(err => console.log("Nepodařilo se aktualizovat hrdinu při startu"));
+    }
+  }, []); // Ty prázdné závorky zajistí, že se to spustí jen 1x po načtení
+  // -------------------------
   
  return (
   <div className="App">

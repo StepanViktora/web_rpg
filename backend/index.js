@@ -58,13 +58,15 @@ app.post('/register', async (req, res) => {
 
 
 // 2. get data from database
-app.get('/player', async (req, res) => {
+// Cesta pro načtení jednoho konkrétního hrdiny
+app.get('/player_by_id', async (req, res) => {
+  const { id } = req.query; // ID čteme z URL (např. ?id=5)
   try {
-    const result = await pool.query('SELECT * FROM users LIMIT 1');
-    res.json(result.rows[0]); // Pošleme první řádek z tabulky jako JSON
+    const result = await pool.query('SELECT * FROM users WHERE id = $1', [id]);
+    res.json(result.rows[0]);
   } catch (err) {
     console.error(err);
-    res.status(500).send('Chyba: Nepodařilo se spojit s databází.');
+    res.status(500).send('Chyba při hledání hrdiny');
   }
 });
 
