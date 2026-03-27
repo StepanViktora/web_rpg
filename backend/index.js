@@ -75,7 +75,18 @@ app.get('/', (req, res) => {
   res.send('Backend SFgame běží a čeká na hrdiny!');
 });
 
- 
+ // Cesta pro žebříček top 10 hráčů
+app.get('/leaderboard', async (req, res) => {
+  try {
+    const result = await pool.query(
+      'SELECT username, level, gold FROM users ORDER BY level DESC, experience DESC LIMIT 10'
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Chyba při načítání žebříčku');
+  }
+});
 
 // Cesta pro "práci v hospodě" - přidá 10 zlata
 app.post('/work', async (req, res) => {

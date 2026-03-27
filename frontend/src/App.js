@@ -56,6 +56,7 @@ function App() {
       .then(res => res.json())
       .then(data => setPlayer(data))
       .catch(err => console.error("Chyba při práci:", err));
+      fetchLeaderboard()
   };
 
   const handleExp = () => {
@@ -69,6 +70,8 @@ function App() {
     .then(res => res.json())
     .then(data => setPlayer(data))
     .catch(err => console.error("Chyba při expení:", err));
+    fetchLeaderboard()
+    
 };
 
 // --- TENTO BLOK PŘIDEJ ---
@@ -95,7 +98,27 @@ function App() {
     }
   }, []); // Ty prázdné závorky zajistí, že se to spustí jen 1x po načtení
   // -------------------------
-  
+
+
+  // 1. Přidej nový stav nahoře v App()
+const [leaderboard, setLeaderboard] = useState([]);
+
+// 2. Přidej funkci pro načtení žebříčku
+const fetchLeaderboard = () => {
+  fetch(`${API_URL}/leaderboard`)
+    .then(res => res.json())
+    .then(data => setLeaderboard(data))
+    .catch(err => console.error("Chyba žebříčku:", err));
+};
+
+// 3. Spusť načtení žebříčku hned po startu nebo při každé akci
+useEffect(() => {
+  // ... tvůj stávající kód s localStorage ...
+  fetchLeaderboard(); // Načteme žebříček při startu
+}, []);
+
+
+
  return (
   <div className="App">
     <h1>SFgame Klon - Rozcestník</h1>
@@ -124,6 +147,8 @@ function App() {
           <p>🧠 Inteligence: {player.intelligence}</p>
           <p>🔋 Výdrž: {player.stamina}</p>
         </div>
+
+        
         <button className="work-btn" onClick={handleWork}>
           Pracovat v hospodě
         </button>
@@ -131,7 +156,30 @@ function App() {
         <button className="work-btn" onClick={handleExp}>
           Jdi na dobrodružství
         </button>
-         
+         <div className="leaderboard-card" style={{ marginTop: '30px', background: '#333', padding: '15px', borderRadius: '10px' }}>
+  <h3>🏆 Síň slávy</h3>
+  <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+    <thead>
+      <tr style={{ borderBottom: '1px solid #555' }}>
+        <th>Hráč</th>
+        <th>Level</th>
+        <th>Zlato</th>
+      </tr>
+    </thead>
+    <tbody>
+      {leaderboard.map((user, index) => (
+        <tr key={index} style={{ borderBottom: '1px solid #444' }}>
+          <td>{index + 1}. {user.username}</td>
+          <td>{user.level}</td>
+          <td>{user.gold}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+  <button onClick={fetchLeaderboard} style={{ marginTop: '10px', fontSize: '0.8em' }}>
+    Aktualizovat žebříček
+  </button>
+</div>
       </div>
     ) : (
       /* --- ČÁST 2: TADY BUDE TEN LOGIN (Místo "Hledám hrdinu...") --- */
