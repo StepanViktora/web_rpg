@@ -126,7 +126,7 @@ return (
       <h1>RPG gameska - Rozcestník</h1>
       
       {player ? (
-        <div className="game-container">
+        <div className="tab-navigation">
           
           {/* --- HLAVNÍ MENU --- */}
           <div className="tab-navigation" style={{ display: 'flex', justifyContent: 'center', gap: '10px', marginBottom: '20px' }}>
