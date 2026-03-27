@@ -33,7 +33,7 @@ function App() {
         const data = await response.json();
         localStorage.setItem("rpg_player", JSON.stringify(data));
         setPlayer(data); // Rovnou přihlásíme vytvořeného hrdinu
-        alert("Hrdina úspěšně vytvořen!");s
+        alert("Hrdina úspěšně vytvořen!");
       } else {
         const errorText = await response.text();
         alert(errorText);
