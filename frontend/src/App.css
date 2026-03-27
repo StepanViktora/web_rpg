@@ -79,7 +79,7 @@ h1 {
 
 /* Styl pro aktivní záložku (aby hráč věděl, kde je) */
 .tab-navigation button.active {
-  background-color: #27ae60;
+  background-color: #cfbe21;
   box-shadow: 0 0 10px #2ecc71;
 }
 
