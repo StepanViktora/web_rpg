@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
-import heroImage from './hero.png';
 
- 
+//components
+import Character from './Components/character';
+import Tavern from './Components/tavern';
+
+
 const API_URL = "https://rpggame-backend.onrender.com";
 
 function App() {
@@ -119,118 +122,44 @@ useEffect(() => {
 
 
 return (
-  <div className="App">
-    <h1>SFgame Klon - Rozcestník</h1>
-    
-    {player ? (
-      <div className="game-container">
-        {/* NAVIGACE - Tohle vidíme vždycky, když jsme přihlášení */}
-        <div className="tab-navigation" style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginBottom: '20px' }}>
-          <button 
-            onClick={() => setActiveTab("postava")}
-            style={{ background: activeTab === "postava" ? "#27ae60" : "#555" }}
-          >
-            🛡️ Postava
-          </button>
-          <button 
-            onClick={() => {
-              setActiveTab("leaderboard");
-              fetchLeaderboard();
-            }}
-            style={{ background: activeTab === "leaderboard" ? "#27ae60" : "#555" }}
-          >
-            🏆 Síň slávy
-          </button>
-        </div>
-
-        {/* OBSAH ZÁLOŽEK */}
-        
-        {activeTab === "postava" && (
-          <div className="stats-card">
-            <h2>Hrdina: {player.username}</h2>
-            <img src={heroImage} alt="Hrdina" className="hero-avatar" />
-            <p className="gold-count">💰 {player.gold} Goldů</p>
-            <p>📈 Level: {player.level}</p>
-
-            <div style={{ background: '#444', borderRadius: '5px', margin: '10px 0' }}>
-              <div style={{ 
-                width: `${player.experience}%`, 
-                background: '#3498db', 
-                height: '10px', 
-                borderRadius: '5px',
-                transition: 'width 0.3s' 
-              }}></div>
-            </div>
-
-            <div style={{textAlign: 'left', margin: '15px 0', borderTop: '1px solid #444', paddingTop: '10px'}}>
-              <p>💪 Síla: {player.strength}</p>
-              <p>🧠 Inteligence: {player.intelligence}</p>
-              <p>🔋 Výdrž: {player.stamina}</p>
-            </div>
-
-            <button className="work-btn" onClick={handleWork}>Pracovat v hospodě</button>
-            <button className="work-btn" onClick={handleExp}>Jdi na dobrodružství</button>
+<div className="App">
+      <h1>SFgame Klon - Rozcestník</h1>
+      
+      {player ? (
+        <div className="game-container">
+          
+          {/* --- HLAVNÍ MENU --- */}
+          <div className="tab-navigation" style={{ display: 'flex', justifyContent: 'center', gap: '10px', marginBottom: '20px' }}>
+            <button onClick={() => setActiveTab("postava")}>🛡️ Postava</button>
+            <button onClick={() => setActiveTab("hospoda")}>🍺 Hospoda</button>
+            <button onClick={() => setActiveTab("obchod")}>🛒 Obchod</button>
+            <button onClick={() => setActiveTab("cech")}>🏰 Cech</button>
+            <button onClick={() => setActiveTab("leaderboard")}>🏆 Síň slávy</button>
           </div>
-        )}
 
-        {activeTab === "leaderboard" && (
-          <div className="leaderboard-card" style={{ background: '#333', padding: '15px', borderRadius: '10px' }}>
-            <h3>🏆 Síň slávy</h3>
-            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-              <thead>
-                <tr style={{ borderBottom: '1px solid #555' }}>
-                  <th>Hráč</th>
-                  <th>Level</th>
-                  <th>Zlato</th>
-                </tr>
-              </thead>
-              <tbody>
-                {leaderboard.map((user, index) => (
-                  <tr key={index} style={{ borderBottom: '1px solid #444' }}>
-                    <td>{index + 1}. {user.username}</td>
-                    <td>{user.level}</td>
-                    <td>{user.gold}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            <button onClick={fetchLeaderboard} style={{ marginTop: '10px', fontSize: '0.8em' }}>
-              Aktualizovat žebříček
-            </button>
-          </div>
-        )}
-      </div>
-    ) : (
-      /* REGISTRACE - Zobrazí se jen, když player je null */
-      <div className="auth-card" style={{ padding: '20px', background: '#222', borderRadius: '10px', marginTop: '20px' }}>
-        <h2>Vytvoř si hrdinu</h2>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', maxWidth: '300px', margin: '0 auto' }}>
-          <input 
-            type="text" 
-            placeholder="Jméno hrdiny" 
-            value={regName}
-            onChange={(e) => setRegName(e.target.value)}
-            style={{ padding: '10px', borderRadius: '5px' }}
-          />
-          <input 
-            type="password" 
-            placeholder="Heslo" 
-            value={regPass}
-            onChange={(e) => setRegPass(e.target.value)}
-            style={{ padding: '10px', borderRadius: '5px' }}
-          />
-          <button onClick={handleRegister} style={{ padding: '10px', background: '#27ae60', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
-            Vstoupit do světa
-          </button>
+          {/* --- ZOBRAZENÍ ZÁLOŽEK --- */}
+          {/* Všimni si, jak posíláme proměnné (props) z App.js do těch komponent! */}
+          
+          {activeTab === "postava" && <Character player={player} />}
+          
+          {activeTab === "hospoda" && <Tavern handleWork={handleWork} handleExp={handleExp} />}
+          
+          {activeTab === "obchod" && <div><h2>🛒 Obchod</h2><p>Tady brzy budou zbraně a lektvary.</p></div>}
+          
+          {activeTab === "cech" && <div><h2>🏰 Cech</h2><p>Tady brzy bude cechovní chat a bonusy.</p></div>}
+          
+          {activeTab === "leaderboard" && (
+             // Tady bys mohl mít <Leaderboard leaderboard={leaderboard} />, pokud si to taky oddělíš!
+             <div className="leaderboard-card">...Tvůj kód s tabulkou žebříčku...</div>
+          )}
+
         </div>
-      </div>
-    )}
-  </div>
-);
-
-  
+      ) : (
+        /* --- REGISTRACE --- */
+        <div className="auth-card"> ... tvůj registrační formulář ... </div>
+      )}
+    </div>
+  );
 }
 
-
 export default App;
-
