@@ -73,7 +73,7 @@ h1 {
 
 .tab-navigation button:hover {
   background-color: #e6c611; /* Při najetí myší zezelená */
-  color: white;
+  color: rgb(0, 0, 0);
   transform: scale(1.05);    /* Mírně se zvětší */
 }
 
