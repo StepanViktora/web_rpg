@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import heroImage from './hero.png';
 
-const API_URL = "http://localhost:5000";
+ 
+const API_URL = "https://rpggame-backend.onrender.com";
 
 function App() {
   const [player, setPlayer] = useState(null);
