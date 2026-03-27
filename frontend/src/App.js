@@ -123,7 +123,7 @@ useEffect(() => {
 
 return (
 <div className="App">
-      <h1>SFgame Klon - Rozcestník</h1>
+      <h1>RPG gameska - Rozcestník</h1>
       
       {player ? (
         <div className="game-container">
