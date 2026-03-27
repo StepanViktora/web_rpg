@@ -8,14 +8,40 @@ const API_URL = "https://rpggame-backend.onrender.com";
 function App() {
   const [player, setPlayer] = useState(null);
 
+  // Nové stavy pro formulář
+  const [regName, setRegName] = useState("");
+  const [regPass, setRegPass] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  // Funkce pro registraci
+  const handleRegister = async () => {
+    if (!regName || !regPass) return alert("Vyplň jméno a heslo!");
+    setLoading(true);
+
+
   
-  useEffect(() => {
-    // here get backend
-    fetch(`${API_URL}/player`)
-      .then(res => res.json())
-      .then(data => setPlayer(data))
-      .catch(err => console.error("Chyba:", err));
-  }, []);
+  try {
+      const response = await fetch(`${API_URL}/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: regName, password: regPass })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setPlayer(data); // Rovnou přihlásíme vytvořeného hrdinu
+        alert("Hrdina úspěšně vytvořen!");
+      } else {
+        const errorText = await response.text();
+        alert(errorText);
+      }
+    } catch (err) {
+      console.error("Chyba při registraci:", err);
+      alert("Server neodpovídá.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleWork = () => {
     fetch(`${API_URL}/work`, { method: 'POST' })

@@ -27,6 +27,36 @@ pool.query('SELECT NOW()', (err, res) => {
 });
 
 
+const bcrypt = require('bcrypt');
+
+// ... (tady máš definovaný pool a express)
+
+app.post('/register', async (req, res) => {
+    const { username, password } = req.body;
+
+    try {
+        // 1. Zašifrujeme heslo (nikdy neukládáme čistý text!)
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // 2. Uložíme nového hráče do databáze se základními statistikami
+        const newUser = await pool.query(
+            'INSERT INTO users (username, password, level, gold, experience, strength, intelligence, stamina) VALUES ($1, $2, 1, 100, 0, 5, 5, 5) RETURNING id, username, level, gold',
+            [username, hashedPassword]
+        );
+
+        res.json(newUser.rows[0]);
+    } catch (err) {
+        console.error(err);
+        if (err.code === '23505') { // Kód pro unikátní jméno v PostgreSQL
+            res.status(400).send("Tento herní přezdívka je již obsazená.");
+        } else {
+            res.status(500).send("Chyba při vytváření hrdiny.");
+        }
+    }
+});
+
+
+
 // 2. get data from database
 app.get('/player', async (req, res) => {
   try {
