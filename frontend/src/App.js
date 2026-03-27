@@ -44,22 +44,31 @@ function App() {
   };
 
   const handleWork = () => {
-    fetch(`${API_URL}/work`, { method: 'POST' })
+    if(!player) return; 
+    fetch(`${API_URL}/work`,{ 
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: player.id })
+    
+    
+    })
       .then(res => res.json())
-      .then(data => {
-        setPlayer(data); 
-      })
+      .then(data => setPlayer(data))
       .catch(err => console.error("Chyba při práci:", err));
   };
 
   const handleExp = () => {
-    fetch(`${API_URL}/exp`, { method: 'POST' })
-      .then(res => res.json())
-      .then(data => {
-        setPlayer(data); 
-      })
-      .catch(err => console.error("Chyba při práci:", err));
-  };
+  if (!player) return;
+
+  fetch(`${API_URL}/exp`, { 
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id: player.id }) // <--- Posíláme ID tvého hrdiny
+  })
+    .then(res => res.json())
+    .then(data => setPlayer(data))
+    .catch(err => console.error("Chyba při expení:", err));
+};
 
 
   

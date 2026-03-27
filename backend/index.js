@@ -77,9 +77,11 @@ app.get('/', (req, res) => {
 
 // Cesta pro "práci v hospodě" - přidá 10 zlata
 app.post('/work', async (req, res) => {
+  const { id } = req.body;
+  
   try {
-    await pool.query('UPDATE users SET gold = gold + 10 WHERE id = 1');
-    const result = await pool.query('SELECT * FROM users WHERE id = 1');
+    await pool.query('UPDATE users SET gold = gold + 10 WHERE id = $1', [id]);
+    const result = await pool.query('SELECT * FROM users WHERE id = $1', [id]);
     res.json(result.rows[0]); // Vrátíme aktualizovaného hrdinu
   } catch (err) {
     console.error(err);
@@ -91,19 +93,20 @@ app.post('/work', async (req, res) => {
 
 // Cesta pro "práci v hospodě" - přidá 10 zlata
 app.post('/exp', async (req, res) => {
+  const { id } = req.body;
   try {
-    await pool.query('UPDATE users SET experience = experience + 10 WHERE id = 1');
+    await pool.query('UPDATE users SET experience = experience + 10 WHERE id = $1', [id]);
     
-    let result = await pool.query('SELECT * FROM users WHERE id = 1');
+    let result = await pool.query('SELECT * FROM users WHERE id = $1', [id]);
     let player = result.rows[0];  
 
-// 3. Logika Level Upu: Pokud má 100 nebo víc XP
+ 
     if (player.experience >= 100) {
       // Zvýšíme level, XP vynulujeme (nebo odečteme 100) a můžeme třeba přidat bonus k síle
-      await pool.query(`UPDATE users SET level = level + 1, experience = 0, strength = strength + 2 WHERE id = 1`);
+      await pool.query('UPDATE users SET level = level + 1, experience = 0, strength = strength + 2 WHERE id = $1', [id]);
       
-      // Znovu načteme data po Level Upu
-      const updatedResult = await pool.query('SELECT * FROM users WHERE id = 1');
+       
+      const updatedResult = await pool.query('SELECT * FROM users WHERE id = $1', [id]);
       player = updatedResult.rows[0];
       console.log("LEVEL UP! Gratulujeme.");
     }
