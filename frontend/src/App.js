@@ -82,6 +82,30 @@ function App() {
     fetchLeaderboard();
   };
 
+  const handleBattle = async (defenderId) => {
+    if (!player) return;
+    try {
+      const response = await fetch(`${API_URL}/battle`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ attackerId: player.id, defenderId: defenderId }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        alert(data.message);
+        setPlayer(data.player); // Tímto se ti hned aktualizují staty (zlato/XP)
+        fetchLeaderboard(); // Tímto se obnoví tabulka ostatních
+      } else {
+        const errorText = await response.text();
+        alert("Chyba souboje: " + errorText);
+      }
+    } catch (err) {
+      console.error("Chyba při komunikaci se serverem:", err);
+      alert("Server pro souboje je momentálně nedostupný.");
+    }
+  };
+
   const handleExp = () => {
     if (!player) return;
 
