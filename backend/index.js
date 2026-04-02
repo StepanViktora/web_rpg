@@ -52,8 +52,6 @@ app.post("/register", async (req, res) => {
   }
 });
 
-const bcrypt = require("bcrypt");
-
 app.post("/login", async (req, res) => {
   const { username, password } = req.body;
   try {
