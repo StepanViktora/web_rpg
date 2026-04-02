@@ -1,5 +1,22 @@
 import React from "react";
 
+const handleBattle = async (defenderId) => {
+  if (!player) return;
+  try {
+    const response = await fetch(`${API_URL}/battle`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ attackerId: player.id, defenderId: defenderId }),
+    });
+    const data = await response.json();
+    alert(data.message);
+    setPlayer(data.player); // Aktualizujeme stav tvého hrdiny
+    fetchLeaderboard(); // Obnovíme žebříček (kvůli zlatu ostatních)
+  } catch (err) {
+    console.error("Chyba souboje:", err);
+  }
+};
+
 function XLeaderboard({ leaderboard }) {
   return (
     <div className="leaderboard-container" style={{ padding: "20px" }}>
@@ -24,6 +41,16 @@ function XLeaderboard({ leaderboard }) {
                 </td>
                 <td style={{ textAlign: "right", padding: "8px" }}>
                   💰 {user.gold}
+                </td>
+                <td style={{ textAlign: "right", padding: "8px" }}>
+                  {user.username !== currentPlayerName && (
+                    <button
+                      onClick={() => onBattle(user.id)}
+                      style={{ cursor: "pointer" }}
+                    >
+                      ⚔️ Vyzvat
+                    </button>
+                  )}
                 </td>
               </tr>
             ))

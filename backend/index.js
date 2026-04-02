@@ -125,6 +125,69 @@ app.post("/work", async (req, res) => {
   }
 });
 
+app.post("/battle", async (req, res) => {
+  const { attackerId, defenderId } = req.body;
+
+  try {
+    // 1. Načteme oba hráče
+    const attackerRes = await pool.query("SELECT * FROM users WHERE id = $1", [
+      attackerId,
+    ]);
+    const defenderRes = await pool.query("SELECT * FROM users WHERE id = $1", [
+      defenderId,
+    ]);
+
+    if (attackerRes.rows.length === 0 || defenderRes.rows.length === 0) {
+      return res.status(404).send("Jeden z hráčů nebyl nalezen.");
+    }
+
+    const attacker = attackerRes.rows[0];
+    const defender = defenderRes.rows[0];
+
+    // 2. Logika souboje (Náhoda + bonus za sílu)
+    // Každý hodí kostkou 1-100 a přičte se mu polovina jeho síly
+    const attackerScore = Math.random() * 100 + attacker.strength / 2;
+    const defenderScore = Math.random() * 100 + defender.strength / 2;
+
+    let winner, loser, message;
+    if (attackerScore > defenderScore) {
+      winner = attacker;
+      loser = defender;
+      message = `Vítězství! Porazil jsi hráče ${defender.username}.`;
+      // Vítěz získá 20 zlata, poražený ztratí 10 (pokud má)
+      await pool.query(
+        "UPDATE users SET gold = gold + 20, experience = experience + 15 WHERE id = $1",
+        [attacker.id],
+      );
+      await pool.query(
+        "UPDATE users SET gold = GREATEST(0, gold - 10) WHERE id = $1",
+        [defender.id],
+      );
+    } else {
+      winner = defender;
+      loser = attacker;
+      message = `Prohra! Hráč ${defender.username} tě zmlátil.`;
+      await pool.query(
+        "UPDATE users SET gold = GREATEST(0, gold - 10) WHERE id = $1",
+        [attacker.id],
+      );
+      await pool.query("UPDATE users SET gold = gold + 10 WHERE id = $1", [
+        defender.id,
+      ]);
+    }
+
+    // 3. Vrátíme aktualizovaná data útočníka, aby se mu v Reactu hned změnilo zlato
+    const updatedAttacker = await pool.query(
+      "SELECT * FROM users WHERE id = $1",
+      [attacker.id],
+    );
+    res.json({ message, player: updatedAttacker.rows[0] });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Chyba při souboji.");
+  }
+});
+
 // Cesta pro "práci v hospodě" - přidá 10 zlata
 app.post("/exp", async (req, res) => {
   const { id } = req.body;
