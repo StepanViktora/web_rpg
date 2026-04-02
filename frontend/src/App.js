@@ -157,7 +157,7 @@ function App() {
             }}
           >
             <button onClick={() => setActiveTab("postava")}>🛡️ Postava</button>
-            <button onClick={() => setActiveTab("arena")}>🍺 Arena</button>
+            <button onClick={() => setActiveTab("arena")}>⚔️ Arena</button>
             <button onClick={() => setActiveTab("hospoda")}>🍺 Hospoda</button>
             <button onClick={() => setActiveTab("obchod")}>🛒 Obchod</button>
             <button onClick={() => setActiveTab("cech")}>🏰 Cech</button>
