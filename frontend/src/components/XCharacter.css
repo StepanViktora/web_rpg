@@ -1,0 +1,115 @@
+/* Kontejner karty postavy */
+.character-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px !important;
+}
+
+.character-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.level-badge {
+  background: #d4af37;
+  color: #000;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+/* XP Bar vizuál */
+.xp-container {
+  width: 100%;
+  margin: 10px 0;
+  position: relative;
+}
+
+.xp-bar-bg {
+  background: #333;
+  height: 18px;
+  border-radius: 9px;
+  border: 1px solid #555;
+  overflow: hidden;
+}
+
+.xp-bar-fill {
+  background: linear-gradient(90deg, #3498db, #2980b9);
+  height: 100%;
+  transition: width 0.5s ease-out;
+}
+
+.xp-text {
+  font-size: 0.7rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-shadow: 1px 1px 2px #000;
+  font-weight: bold;
+}
+
+/* Zobrazení zlata */
+.gold-display {
+  font-size: 1.4rem;
+  color: #ffd700;
+  font-weight: bold;
+  margin: 10px 0;
+  text-shadow: 0 0 5px rgba(255, 215, 0, 0.3);
+}
+
+/* Mřížka atributů (Síla, Intel, Výdrž) */
+.attributes-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 sloupce vedle sebe */
+  gap: 10px;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.attr-item {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 10px 5px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid #444;
+}
+
+.attr-icon {
+  font-size: 1.2rem;
+  margin-bottom: 5px;
+}
+
+.attr-label {
+  font-size: 0.7rem;
+  color: #aaa;
+  text-transform: uppercase;
+}
+
+.attr-value {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #fff;
+}
+
+/* Mobilní optimalizace */
+@media (max-width: 400px) {
+  .attributes-grid {
+    gap: 5px;
+  }
+  
+  .attr-value {
+    font-size: 0.9rem;
+  }
+  
+  .hero-avatar {
+    width: 100px; /* Menší obrázek na úplně malých mobilech */
+  }
+}
