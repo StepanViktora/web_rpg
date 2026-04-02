@@ -1,6 +1,6 @@
 GIT hub push
 
-git remote add origin https://github.com/tvoje-jmeno/moje-sfgame.git
+git commit -m "Propojeni frontendu na ostry backend"
 
 //branch name
 git branch -M main
