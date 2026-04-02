@@ -196,7 +196,11 @@ function App() {
           {activeTab === "leaderboard" && (
             // Tady bys mohl mít <Leaderboard leaderboard={leaderboard} />, pokud si to taky oddělíš!
             <div className="leaderboard-card">
-              <XLeaderboard leaderboard={leaderboard} />
+              <XLeaderboard
+                leaderboard={leaderboard}
+                currentPlayerName={player?.username} // Posíláme jméno tvého hrdiny
+                onBattle={handleBattle} // Posíláme funkci pro souboj
+              />
             </div>
           )}
         </div>

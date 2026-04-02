@@ -1,23 +1,7 @@
 import React from "react";
 
-const handleBattle = async (defenderId) => {
-  if (!player) return;
-  try {
-    const response = await fetch(`${API_URL}/battle`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ attackerId: player.id, defenderId: defenderId }),
-    });
-    const data = await response.json();
-    alert(data.message);
-    setPlayer(data.player); // Aktualizujeme stav tvého hrdiny
-    fetchLeaderboard(); // Obnovíme žebříček (kvůli zlatu ostatních)
-  } catch (err) {
-    console.error("Chyba souboje:", err);
-  }
-};
-
-function XLeaderboard({ leaderboard }) {
+// Do závorek přidáme props, které posíláme z App.js
+function XLeaderboard({ leaderboard, currentPlayerName, onBattle }) {
   return (
     <div className="leaderboard-container" style={{ padding: "20px" }}>
       <h2>🏆 Síň slávy (Top 10)</h2>
@@ -29,6 +13,7 @@ function XLeaderboard({ leaderboard }) {
             <th style={{ textAlign: "left", padding: "8px" }}>Hráč</th>
             <th style={{ textAlign: "center", padding: "8px" }}>Level</th>
             <th style={{ textAlign: "right", padding: "8px" }}>Zlato</th>
+            <th style={{ textAlign: "right", padding: "8px" }}>Akce</th>
           </tr>
         </thead>
         <tbody>
@@ -43,10 +28,18 @@ function XLeaderboard({ leaderboard }) {
                   💰 {user.gold}
                 </td>
                 <td style={{ textAlign: "right", padding: "8px" }}>
+                  {/* Tlačítko se ukáže jen u ostatních hráčů */}
                   {user.username !== currentPlayerName && (
                     <button
                       onClick={() => onBattle(user.id)}
-                      style={{ cursor: "pointer" }}
+                      style={{
+                        cursor: "pointer",
+                        backgroundColor: "#e74c3c",
+                        color: "white",
+                        border: "none",
+                        padding: "5px 10px",
+                        borderRadius: "4px",
+                      }}
                     >
                       ⚔️ Vyzvat
                     </button>
@@ -56,7 +49,7 @@ function XLeaderboard({ leaderboard }) {
             ))
           ) : (
             <tr>
-              <td colSpan="3" style={{ textAlign: "center", padding: "20px" }}>
+              <td colSpan="4" style={{ textAlign: "center", padding: "20px" }}>
                 Zatím tu nikdo není...
               </td>
             </tr>
