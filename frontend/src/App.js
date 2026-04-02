@@ -4,6 +4,7 @@ import "./App.css";
 //components
 import Character from "./components/XCharacter";
 import Tavern from "./components/XTavern";
+import XLeaderboard from "./components/Xleaderboard";
 
 const API_URL = "https://rpggame-backend.onrender.com";
 
