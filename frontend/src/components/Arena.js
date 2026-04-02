@@ -7,7 +7,7 @@ function Arena({ handleWork, handleExp }) {
       style={{ background: "#333", padding: "20px", borderRadius: "10px" }}
     >
       <h2>⚔️ ARENA!</h2>
-      <p>Tady budeš bojot o slávu!</p>
+      <p>Tady budeš bojovat o slávu!</p>
     </div>
   );
 }
