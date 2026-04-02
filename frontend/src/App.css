@@ -8,16 +8,18 @@
   justify-content: flex-start;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: #ffffff;
+  padding: 10px; /* Přidáno, aby text nebyl nalepený na hraně mobilu */
 }
 
-.stats-card, .leaderboard-card, .tavern-card {
+/* Sjednocená karta pro všechny sekce */
+.stats-card, .leaderboard-card, .tavern-card, .auth-card {
   background: linear-gradient(145deg, #2c2c2c, #1e1e1e);
   border: 3px solid #d4af37;
   border-radius: 15px;
-  padding: 25px;
+  padding: 20px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-  width: 100%;       /* Na mobilu roztáhnout */
-  max-width: 400px;  /* Na PC omezit šířku */
+  width: 100%;
+  max-width: 450px;
   margin-bottom: 20px;
   box-sizing: border-box;
 }
@@ -25,49 +27,24 @@
 h1 {
   color: #d4af37;
   text-transform: uppercase;
-  letter-spacing: 2px;
-  margin-bottom: 30px;
+  letter-spacing: 1px;
+  margin: 15px 0 20px 0;
+  font-size: 1.8rem;
 }
 
-.gold-count {
-  font-size: 1.5rem;
-  color: #ffd700;
-  font-weight: bold;
-}
-
-.work-btn {
-  margin-top: 20px;
-  padding: 12px 25px;
-  font-size: 1.1rem;
-  font-weight: bold;
-  color: #1a1a1a;
-  background-color: #d4af37;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: transform 0.1s, background-color 0.2s;
-}
-
-.work-btn:hover {
-  background-color: #f1c40f;
-  transform: scale(1.05);
-}
-
-.work-btn:active {
-  transform: scale(0.95);
-}
-
+/* Navigace - na PC vypadá jako řada, na mobilu se přepne */
 .tab-navigation {
   background: #2c3e50;
   padding: 10px;
   border-radius: 8px;
   display: flex;
-  flex-wrap: wrap;    /* Aby se tlačítka naskládala pod sebe, když se nevejdou */
+  flex-wrap: wrap;
   justify-content: center;
   gap: 8px;
   width: 100%;
   max-width: 500px;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
+  box-sizing: border-box;
 }
 
 .tab-navigation button {
@@ -78,83 +55,77 @@ h1 {
   cursor: pointer;
   font-weight: bold;
   border-radius: 5px;
-  transition: all 0.3s ease;
-  flex: 1 1 auto;     /* Tlačítka se přizpůsobí šířce */
-  min-width: 100px;
+  transition: all 0.2s ease;
+  flex: 1 1 calc(33% - 10px); /* Na PC tři vedle sebe */
+  min-width: 80px;
 }
 
 .tab-navigation button.active {
   background-color: #cfbe21;
   color: #000;
   border-color: #fff;
+  box-shadow: 0 0 10px #cfbe21;
 }
 
-/* Styl pro aktivní záložku (aby hráč věděl, kde je) */
-.tab-navigation button.active {
-  background-color: #cfbe21;
-  box-shadow: 0 0 10px #2ecc71;
+/* Kontejner pro tabulky (velmi důležité pro mobil!) */
+.leaderboard-container {
+  width: 100%;
+  overflow-x: auto; /* Pokud je tabulka moc široká, umožní scrollování do stran */
+  -webkit-overflow-scrolling: touch;
 }
 
-
-.hero-avatar {
-  width: 150px;
-  height: auto;
-  border-radius: 10px;
-  border: 2px solid #5d4037;
-  background-color: #2c2c2c;
-  padding: 5px;
-  margin-bottom: 15px;
+table {
+  min-width: 300px; /* Aby tabulka nezmizela */
 }
 
-
-.tab-navigation button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  color: white;
-  cursor: pointer;
+/* Tlačítka pro akce (Hospoda/Aréna) */
+.work-btn {
+  width: 100%; /* Na mobilu vždy na celou šířku */
+  margin-top: 15px;
+  padding: 15px;
+  font-size: 1.1rem;
   font-weight: bold;
-  transition: 0.3s;
+  color: #1a1a1a;
+  background-color: #d4af37;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
 }
 
-.tab-navigation button:hover {
-  filter: brightness(1.2);
-}
-
-
+/* --- MOBILNÍ ÚPRAVY (pod 600px) --- */
 @media (max-width: 600px) {
   h1 {
-    font-size: 1.4rem; /* Menší nadpis */
+    font-size: 1.3rem;
+    letter-spacing: 0;
   }
 
+  /* Tlačítka navigace do mřížky 2 vedle sebe */
   .tab-navigation {
     display: grid;
-    grid-template-columns: 1fr 1fr; /* Dvě tlačítka vedle sebe */
-    gap: 5px;
-    padding: 8px;
+    grid-template-columns: 1fr 1fr; 
+    gap: 6px;
   }
 
   .tab-navigation button {
     padding: 12px 5px;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
+    min-width: 0; /* Zrušíme omezení pro grid */
   }
 
-  /* Poslední tlačítko (Síně slávy) dáme přes celou šířku, pokud je jich lichý počet */
-  .tab-navigation button:last-child {
-    grid-column: span 1; 
-  }
+ 
 
-  .stats-card {
-    padding: 20px;
+  .stats-card, .leaderboard-card, .tavern-card {
+    padding: 15px;
     border-width: 2px;
   }
 
-  .gold-count {
-    font-size: 1.2rem;
+  /* Zmenšení písma v tabulce, aby se vešla */
+  td, th {
+    font-size: 0.85rem;
+    padding: 6px !important;
   }
 
-  .work-btn {
-    width: 100%; /* Tlačítka akcí přes celý displej pro snadné klikání */
-    padding: 15px;
+  .hero-avatar {
+    width: 120px;
   }
 }
