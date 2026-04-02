@@ -8,18 +8,18 @@
   justify-content: flex-start;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: #ffffff;
-  padding: 10px; /* Přidáno, aby text nebyl nalepený na hraně mobilu */
+  padding: 10px;
 }
 
-/* Sjednocená karta pro všechny sekce */
-.stats-card, .leaderboard-card, .tavern-card, .auth-card {
+/* Karta Síně slávy - speciální úprava pro mobil */
+.leaderboard-card {
   background: linear-gradient(145deg, #2c2c2c, #1e1e1e);
   border: 3px solid #d4af37;
   border-radius: 15px;
   padding: 20px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.5);
   width: 100%;
-  max-width: 450px;
+  max-width: 500px; /* Trochu širší než ostatní, tabulky potřebují místo */
   margin-bottom: 20px;
   box-sizing: border-box;
 }
@@ -32,7 +32,7 @@ h1 {
   font-size: 1.8rem;
 }
 
-/* Navigace - na PC vypadá jako řada, na mobilu se přepne */
+/* Navigace */
 .tab-navigation {
   background: #2c3e50;
   padding: 10px;
@@ -56,7 +56,7 @@ h1 {
   font-weight: bold;
   border-radius: 5px;
   transition: all 0.2s ease;
-  flex: 1 1 calc(33% - 10px); /* Na PC tři vedle sebe */
+  flex: 1 1 calc(33% - 10px);
   min-width: 80px;
 }
 
@@ -67,20 +67,9 @@ h1 {
   box-shadow: 0 0 10px #cfbe21;
 }
 
-/* Kontejner pro tabulky (velmi důležité pro mobil!) */
-.leaderboard-container {
-  width: 100%;
-  overflow-x: auto; /* Pokud je tabulka moc široká, umožní scrollování do stran */
-  -webkit-overflow-scrolling: touch;
-}
-
-table {
-  min-width: 300px; /* Aby tabulka nezmizela */
-}
-
 /* Tlačítka pro akce (Hospoda/Aréna) */
 .work-btn {
-  width: 100%; /* Na mobilu vždy na celou šířku */
+  width: 100%;
   margin-top: 15px;
   padding: 15px;
   font-size: 1.1rem;
@@ -92,40 +81,74 @@ table {
   cursor: pointer;
 }
 
+/* --- ZÁKLADNÍ STYLY TABULKY --- */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+td, th {
+  padding: 8px;
+  font-size: 0.95rem; /* Čitelné i na mobilu */
+}
+
 /* --- MOBILNÍ ÚPRAVY (pod 600px) --- */
 @media (max-width: 600px) {
   h1 {
     font-size: 1.3rem;
-    letter-spacing: 0;
   }
 
-  /* Tlačítka navigace do mřížky 2 vedle sebe */
+  /* Karta Síně slávy na mobilu - minimální odsazení */
+  .leaderboard-card {
+    padding: 10px 5px; /* Minimum mezer po stranách */
+    border-radius: 8px; /* Menší zaoblení */
+  }
+
+  /* Navigace do mřížky 2 vedle sebe */
   .tab-navigation {
     display: grid;
-    grid-template-columns: 1fr 1fr; 
+    grid-template-columns: 1fr 1fr;
     gap: 6px;
   }
 
   .tab-navigation button {
     padding: 12px 5px;
     font-size: 0.85rem;
-    min-width: 0; /* Zrušíme omezení pro grid */
   }
 
- 
-
-  .stats-card, .leaderboard-card, .tavern-card {
-    padding: 15px;
-    border-width: 2px;
+  /* --- ÚPRAVY TABULKY NA MOBILU --- */
+  
+  /* Celé tabulce dáme menší písmo */
+  table {
+    font-size: 0.8rem; 
   }
 
-  /* Zmenšení písma v tabulce, aby se vešla */
+  /* Minimální odsazení uvnitř buněk */
   td, th {
-    font-size: 0.85rem;
-    padding: 6px !important;
+    padding: 6px 3px !important; 
+    letter-spacing: -0.5px; /* Trochu zhuštěnější text */
   }
 
-  .hero-avatar {
-    width: 120px;
+  /* Menší a tenčí písmo pro jména */
+  td:first-child {
+    font-weight: bold;
+  }
+
+  /* Menší a tenčí písmo pro levely */
+  td:nth-child(2) {
+    text-align: center;
+  }
+
+  /* Menší zlaté mince */
+  td img {
+    width: 12px;
+    height: auto;
+  }
+
+  /* Tlačítko Vyzvat na mobilu - menší, aby se vešlo */
+  td button {
+    font-size: 0.75rem;
+    padding: 4px 6px;
+    margin-left: 2px;
   }
 }
