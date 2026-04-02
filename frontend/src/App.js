@@ -172,7 +172,47 @@ function App() {
         </div>
       ) : (
         /* --- REGISTRACE --- */
-        <div className="auth-card"> ... tvůj registrační formulář ... </div>
+        /* --- REGISTRACE --- */
+        <div className="auth-card">
+          <h2>Vytvoř si hrdinu</h2>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "10px",
+              maxWidth: "300px",
+              margin: "0 auto",
+            }}
+          >
+            <input
+              type="text"
+              placeholder="Jméno hrdiny"
+              value={regName}
+              onChange={(e) => setRegName(e.target.value)}
+              style={{ padding: "10px" }}
+            />
+            <input
+              type="password"
+              placeholder="Heslo"
+              value={regPass}
+              onChange={(e) => setRegPass(e.target.value)}
+              style={{ padding: "10px" }}
+            />
+            <button
+              onClick={handleRegister}
+              disabled={loading}
+              style={{
+                padding: "10px",
+                cursor: "pointer",
+                backgroundColor: "#4CAF50",
+                color: "white",
+                border: "none",
+              }}
+            >
+              {loading ? "Vytvářím..." : "⚔️ Vstoupit do světa"}
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );
