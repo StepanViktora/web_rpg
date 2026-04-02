@@ -100,7 +100,7 @@ app.get("/", (req, res) => {
 app.get("/leaderboard", async (req, res) => {
   try {
     const result = await pool.query(
-      "SELECT username, level, gold FROM users ORDER BY level DESC, experience DESC LIMIT 10",
+      "SELECT id, username, level, gold FROM users ORDER BY level DESC, experience DESC LIMIT 10",
     );
     res.json(result.rows);
   } catch (err) {
