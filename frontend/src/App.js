@@ -5,6 +5,7 @@ import "./App.css";
 import Character from "./components/XCharacter";
 import Tavern from "./components/XTavern";
 import XLeaderboard from "./components/Leaderboard";
+import Arena from "./components/Arena";
 
 const API_URL = "https://rpggame-backend.onrender.com";
 
@@ -156,6 +157,7 @@ function App() {
             }}
           >
             <button onClick={() => setActiveTab("postava")}>🛡️ Postava</button>
+            <button onClick={() => setActiveTab("arena")}>🍺 Arena</button>
             <button onClick={() => setActiveTab("hospoda")}>🍺 Hospoda</button>
             <button onClick={() => setActiveTab("obchod")}>🛒 Obchod</button>
             <button onClick={() => setActiveTab("cech")}>🏰 Cech</button>
@@ -171,6 +173,10 @@ function App() {
 
           {activeTab === "hospoda" && (
             <Tavern handleWork={handleWork} handleExp={handleExp} />
+          )}
+
+          {activeTab === "arena" && (
+            <Arena handleWork={handleWork} handleExp={handleExp} />
           )}
 
           {activeTab === "obchod" && (
