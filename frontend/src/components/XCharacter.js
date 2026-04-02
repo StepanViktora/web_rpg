@@ -1,7 +1,7 @@
 // frontend/src/components/Character.js
 import React from "react";
 import heroImage from "../hero.png"; // Tečka navíc, protože jdeme o složku výš
-import "./Character.css"; // Přidáme vlastní styl pro postavu
+import "./XCharacter.css"; // Přidáme vlastní styl pro postavu
 
 function Character({ player }) {
   return (
