@@ -44,6 +44,30 @@ function App() {
     }
   };
 
+  const handleLogin = async () => {
+    if (!regName || !regPass) return alert("Vyplň jméno a heslo!");
+    setLoading(true);
+    try {
+      const response = await fetch(`${API_URL}/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: regName, password: regPass }),
+      });
+      if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem("rpg_player", JSON.stringify(data));
+        setPlayer(data);
+      } else {
+        const errorText = await response.text();
+        alert(errorText);
+      }
+    } catch (err) {
+      alert("Server neodpovídá.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleWork = () => {
     if (!player) return;
     fetch(`${API_URL}/work`, {
@@ -174,7 +198,7 @@ function App() {
         /* --- REGISTRACE --- */
         /* --- REGISTRACE --- */
         <div className="auth-card">
-          <h2>Vytvoř si hrdinu</h2>
+          <h2>{/* Nadpis */} Vítej v RPG světě</h2>
           <div
             style={{
               display: "flex",
@@ -198,19 +222,29 @@ function App() {
               onChange={(e) => setRegPass(e.target.value)}
               style={{ padding: "10px" }}
             />
-            <button
-              onClick={handleRegister}
-              disabled={loading}
-              style={{
-                padding: "10px",
-                cursor: "pointer",
-                backgroundColor: "#4CAF50",
-                color: "white",
-                border: "none",
-              }}
-            >
-              {loading ? "Vytvářím..." : "⚔️ Vstoupit do světa"}
-            </button>
+
+            <div style={{ display: "flex", gap: "10px" }}>
+              <button
+                onClick={handleLogin}
+                disabled={loading}
+                style={{ flex: 1, padding: "10px", cursor: "pointer" }}
+              >
+                {loading ? "..." : "🔑 Přihlásit"}
+              </button>
+              <button
+                onClick={handleRegister}
+                disabled={loading}
+                style={{
+                  flex: 1,
+                  padding: "10px",
+                  cursor: "pointer",
+                  backgroundColor: "#4CAF50",
+                  color: "white",
+                }}
+              >
+                {loading ? "..." : "⚔️ Registrace"}
+              </button>
+            </div>
           </div>
         </div>
       )}
