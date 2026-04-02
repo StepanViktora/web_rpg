@@ -45,3 +45,5 @@ function Character({ player }) {
     </div>
   );
 }
+
+export default Character;
